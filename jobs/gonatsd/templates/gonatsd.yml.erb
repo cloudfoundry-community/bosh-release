@@ -1,0 +1,47 @@
+---
+# TODO: convert to new properties syntax
+<% nats_ip = properties.nats.listen_address || properties.nats.address %>
+
+bind_address: <%= nats_ip %>:<%= properties.nats.port || 4222 %>
+
+ping:
+  interval: <%= properties.nats.ping_interval || 5 %>s
+  max_outstanding: <%= properties.nats.ping_max_outstanding || 2 %>
+
+<% if properties.nats.profiler && properties.nats.profiler.enabled %>
+pprof:
+  bind_address: <%= nats_ip %>:<%= properties.nats.profiler.port || 10000 %>
+<% end %>
+
+<% if properties.nats.http && properties.nats.http.enabled %>
+varz:
+  bind_address: <%= nats_ip %>:<%= properties.nats.http.port || 9222 %>
+  users:
+    <%= properties.nats.http.user %>: <%= properties.nats.http.password %>
+<% end %>
+
+auth:
+  users:
+    <%= properties.nats.user %>: <%= properties.nats.password %>
+  timeout: <%= properties.nats.auth_timeout || 1 %>s
+
+logging:
+  file: /var/vcap/sys/log/gonatsd/gonatsd.log
+  level: info
+
+<% if properties.nats.limits %>
+limits:
+  # TODO: helper for optional properties
+  <% if properties.nats.limits.payload %>
+  payload: <%= properties.nats.limits.payload %>
+  <% end %>
+  <% if properties.nats.limits.pending %>
+  pending: <%= properties.nats.limits.pending %>
+  <% end %>
+  <% if properties.nats.limits.control %>
+  control: <%= properties.nats.limits.control %>
+  <% end %>
+  <% if properties.nats.limits.connections %>
+  connections: <%= properties.nats.limits.connections %>
+  <% end %>
+<% end %>

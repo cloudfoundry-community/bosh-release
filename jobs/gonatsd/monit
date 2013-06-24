@@ -1,0 +1,5 @@
+check process gonatsd
+  with pidfile /var/vcap/sys/run/gonatsd/gonatsd.pid
+  start program "/var/vcap/jobs/gonatsd/bin/gonatsd_ctl start"
+  stop program "/var/vcap/jobs/gonatsd/bin/gonatsd_ctl stop"
+  group vcap

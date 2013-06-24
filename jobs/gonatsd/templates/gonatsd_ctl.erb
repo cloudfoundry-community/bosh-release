@@ -1,0 +1,44 @@
+#!/bin/bash
+
+source /var/vcap/packages/common/utils.sh
+
+export PATH=/var/vcap/packages/gonatsd/bin:$PATH
+
+RUN_DIR=/var/vcap/sys/run/gonatsd
+LOG_DIR=/var/vcap/sys/log/gonatsd
+PIDFILE=$RUN_DIR/gonatsd.pid
+RUNAS=vcap
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "Gonatsd"
+
+    # Avoid Neighbour table overflow
+    sysctl -w net.ipv4.neigh.default.gc_thresh3=4096
+    sysctl -w net.ipv4.neigh.default.gc_thresh2=2048
+    sysctl -w net.ipv4.neigh.default.gc_thresh1=1024
+
+    mkdir -p $RUN_DIR $LOG_DIR
+    chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR
+
+    echo $$ > $PIDFILE
+    ulimit -n 65536
+
+    exec chpst -u $RUNAS:$RUNAS \
+      /var/vcap/packages/gonatsd/bin/gonatsd \
+      -config /var/vcap/jobs/gonatsd/config/gonatsd.yml \
+      >>$LOG_DIR/gonatsd.stdout.log \
+      2>>$LOG_DIR/gonatsd.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+
+  echo "Usage: gonatsd_ctl {start|stop}" ;;
+esac

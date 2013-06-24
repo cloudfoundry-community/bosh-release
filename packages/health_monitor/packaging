@@ -1,0 +1,9 @@
+set -e
+
+cp -a * ${BOSH_INSTALL_TARGET}
+
+cd ${BOSH_INSTALL_TARGET}/bosh/health_monitor
+
+bundle_cmd=/var/vcap/packages/ruby/bin/bundle
+$bundle_cmd install --local --deployment --without=development test
+

@@ -1,0 +1,47 @@
+---
+name: gonatsd
+
+templates:
+  gonatsd_ctl.erb: bin/gonatsd_ctl
+  gonatsd.yml.erb: config/gonatsd.yml
+
+packages:
+  - gonatsd
+  - common
+
+properties:
+  nats.listen_address:
+    description: IP of a local interface NATS listens on
+
+  nats.address:
+    description: IP other jobs use to talk to NATS
+  nats.port:
+    default: 4222
+
+  nats.user: {}
+  nats.password: {}
+
+  nats.auth_timeout:
+    default: 1
+
+  nats.ping_interval:
+    default: 5
+  nats.ping_max_outstanding:
+    default: 2
+
+  nats.http.enabled:
+    default: false
+  nats.http.port:
+    default: 9222
+  nats.http.user: {}
+  nats.http.password: {}
+
+  nats.profiler.enabled:
+    default: false
+  nats.profiler.port:
+    default: 10000
+
+  nats.limits.payload: {}
+  nats.limits.pending: {}
+  nats.limits.control: {}
+  nats.limits.connections: {}

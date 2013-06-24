@@ -1,0 +1,7 @@
+---
+name: openstack_registry
+dependencies:
+- libpq
+- ruby
+files:
+- bosh/openstack_registry/**/*
