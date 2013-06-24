@@ -1,0 +1,15 @@
+.idea
+jobs/micro_*/monit
+jobs/micro_*/spec
+jobs/micro_*/templates/
+config/dev.yml
+config/private.yml
+releases/*.tgz
+dev_releases
+.dev_builds
+.final_builds/jobs/**/*.tgz
+.final_builds/packages/**/*.tgz
+.idea
+blobs
+.blobs
+src_alt

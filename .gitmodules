@@ -1,0 +1,6 @@
+[submodule "src/bosh"]
+	path = src/bosh
+	url = git@github.com:cloudfoundry/bosh.git
+[submodule "src/gonatsd"]
+	path = src/gonatsd
+	url = git@github.com:cloudfoundry/gonatsd.git
